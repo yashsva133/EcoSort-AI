@@ -286,7 +286,7 @@ Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more informa
 
 <div align="center">
 
-**Developed with ❤️ by [Yash Srivastava](https://github.com/yashsva133)**
+**Developed with ❤️ by [Yashsva](https://github.com/yashsva133)**
 
 ⭐ *If you find EcoSort AI useful for your research, smart bin, or hackathon, please consider starring the repository!* ⭐
 
