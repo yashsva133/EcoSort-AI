@@ -1,0 +1,13 @@
+# EcoSort AI - Edge Waste Segregation Perception Engine
+# Core production dependencies
+
+flask>=3.0.0
+werkzeug>=3.0.0
+opencv-python>=4.8.0
+numpy>=1.24.0,<2.0.0
+onnxruntime>=1.16.0
+requests>=2.31.0
+
+# Hardware Acceleration:
+# On Windows systems with GPU (AMD, Intel, NVIDIA DirectX 12), you can optionally install:
+# onnxruntime-directml>=1.16.0

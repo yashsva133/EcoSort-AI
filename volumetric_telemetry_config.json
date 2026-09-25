@@ -1,0 +1,163 @@
+{
+  "bread wastage": {
+    "stream": "ORGANIC",
+    "unit_g": 75.0,
+    "density_g_cm2": 0.35,
+    "co2_per_kg": 0.52,
+    "value_inr_kg": 6.5
+  },
+  "rice wastage": {
+    "stream": "ORGANIC",
+    "unit_g": 180.0,
+    "density_g_cm2": 0.85,
+    "co2_per_kg": 0.68,
+    "value_inr_kg": 6.5
+  },
+  "daal wastage": {
+    "stream": "ORGANIC",
+    "unit_g": 150.0,
+    "density_g_cm2": 0.9,
+    "co2_per_kg": 0.68,
+    "value_inr_kg": 6.5
+  },
+  "qorma wastage": {
+    "stream": "ORGANIC",
+    "unit_g": 160.0,
+    "density_g_cm2": 0.88,
+    "co2_per_kg": 0.68,
+    "value_inr_kg": 6.5
+  },
+  "vegetable wastage": {
+    "stream": "ORGANIC",
+    "unit_g": 120.0,
+    "density_g_cm2": 0.4,
+    "co2_per_kg": 0.52,
+    "value_inr_kg": 6.5
+  },
+  "food waste": {
+    "stream": "ORGANIC",
+    "unit_g": 150.0,
+    "density_g_cm2": 0.65,
+    "co2_per_kg": 0.6,
+    "value_inr_kg": 6.5
+  },
+  "banana peel": {
+    "stream": "ORGANIC",
+    "unit_g": 65.0,
+    "density_g_cm2": 0.45,
+    "co2_per_kg": 0.52,
+    "value_inr_kg": 6.5
+  },
+  "fruit waste": {
+    "stream": "ORGANIC",
+    "unit_g": 55.0,
+    "density_g_cm2": 0.5,
+    "co2_per_kg": 0.55,
+    "value_inr_kg": 6.5
+  },
+  "plant leaves": {
+    "stream": "ORGANIC",
+    "unit_g": 15.0,
+    "density_g_cm2": 0.12,
+    "co2_per_kg": 0.45,
+    "value_inr_kg": 4.5
+  },
+  "curry leaves": {
+    "stream": "ORGANIC",
+    "unit_g": 12.0,
+    "density_g_cm2": 0.1,
+    "co2_per_kg": 0.45,
+    "value_inr_kg": 4.5
+  },
+  "corrugated carton": {
+    "stream": "INORGANIC",
+    "unit_g": 85.0,
+    "density_g_cm2": 0.3,
+    "co2_per_kg": 1.2,
+    "value_inr_kg": 12.0
+  },
+  "normal paper": {
+    "stream": "INORGANIC",
+    "unit_g": 15.0,
+    "density_g_cm2": 0.15,
+    "co2_per_kg": 1.8,
+    "value_inr_kg": 18.0
+  },
+  "magazine paper": {
+    "stream": "INORGANIC",
+    "unit_g": 35.0,
+    "density_g_cm2": 0.22,
+    "co2_per_kg": 1.5,
+    "value_inr_kg": 14.0
+  },
+  "clear plastic bottle": {
+    "stream": "INORGANIC",
+    "unit_g": 22.0,
+    "density_g_cm2": 0.15,
+    "co2_per_kg": 2.1,
+    "value_inr_kg": 25.0
+  },
+  "drink can": {
+    "stream": "INORGANIC",
+    "unit_g": 15.0,
+    "density_g_cm2": 0.2,
+    "co2_per_kg": 9.0,
+    "value_inr_kg": 110.0
+  },
+  "aluminium foil": {
+    "stream": "INORGANIC",
+    "unit_g": 6.0,
+    "density_g_cm2": 0.08,
+    "co2_per_kg": 9.0,
+    "value_inr_kg": 90.0
+  },
+  "crisp packet": {
+    "stream": "INORGANIC",
+    "unit_g": 8.0,
+    "density_g_cm2": 0.05,
+    "co2_per_kg": 2.45,
+    "value_inr_kg": 4.0
+  },
+  "chocolate wrapper": {
+    "stream": "INORGANIC",
+    "unit_g": 6.0,
+    "density_g_cm2": 0.04,
+    "co2_per_kg": 2.45,
+    "value_inr_kg": 4.0
+  },
+  "plastic film": {
+    "stream": "INORGANIC",
+    "unit_g": 12.0,
+    "density_g_cm2": 0.05,
+    "co2_per_kg": 2.45,
+    "value_inr_kg": 8.0
+  },
+  "tissues": {
+    "stream": "INORGANIC",
+    "unit_g": 4.0,
+    "density_g_cm2": 0.05,
+    "co2_per_kg": 1.1,
+    "value_inr_kg": 2.0
+  },
+  "battery": {
+    "stream": "INORGANIC",
+    "unit_g": 45.0,
+    "density_g_cm2": 1.8,
+    "co2_per_kg": 4.5,
+    "value_inr_kg": 150.0
+  },
+  "pop tab": {
+    "stream": "INORGANIC",
+    "unit_g": 1.5,
+    "density_g_cm2": 0.2,
+    "co2_per_kg": 9.0,
+    "value_inr_kg": 110.0
+  },
+  "unlabeled litter": {
+    "stream": "INORGANIC",
+    "unit_g": 25.0,
+    "density_g_cm2": 0.12,
+    "co2_per_kg": 1.5,
+    "value_inr_kg": 10.0
+  }
+}

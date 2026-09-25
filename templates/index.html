@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSort AI (V3 Dual Stream) | Waste Segregation Platform</title>
+    <meta name="description" content="Real-time AI dual-stream waste segregation with fruit recognition, cafeteria plate splitting, and live municipal telemetry.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=5.1">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="brand">
+                <span class="status-dot"></span>
+                <span class="brand-title">EcoSort <span class="brand-accent">AI</span></span>
+                <span class="brand-subtitle">Autonomous Dual-Stream Segregation • Fruits & Organics • Zero Telemetry</span>
+            </div>
+            <div class="header-actions">
+                <button class="btn-voice active" id="voiceToggleBtn" title="Toggle Voice Announcements">
+                    <span id="voiceIcon">🔊</span>
+                    <span id="voiceStatusText">Voice: ON</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main 2-Column Dashboard Grid -->
+        <main class="workspace-grid">
+            <!-- Left Card: Vision Viewport & Inputs -->
+            <section class="card viewport-card">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <h2>Vision Input</h2>
+                        <p class="card-subtitle">Live Camera & Demo Verification</p>
+                    </div>
+                    <!-- Mode Selector -->
+                    <div class="mode-selector">
+                        <button class="mode-btn" id="btnModeCamera" data-mode="camera">
+                            📹 Live Camera
+                        </button>
+                        <button class="mode-btn active" id="btnModeSamples" data-mode="samples">
+                            ⚡ Demo Presets
+                        </button>
+                        <button class="mode-btn" id="btnModeUpload" data-mode="upload">
+                            📁 Upload
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Camera Device Toolbar (Visible when Camera mode active) -->
+                <div class="camera-source-toolbar" id="cameraSourceToolbar" style="display: none;">
+                    <div class="source-toggle-group">
+                        <button class="btn-source active" id="btnSourcePC" title="Laptop Built-in Webcam">
+                            💻 PC Webcam (Device 0)
+                        </button>
+                        <button class="btn-source" id="btnSourceDroidCam" title="DroidCam Virtual Webcam">
+                            📱 DroidCam (Device 2)
+                        </button>
+                        <button class="btn-source" id="btnSourceDev1" title="Alternate USB Camera">
+                            📷 Camera (Device 1)
+                        </button>
+                        <button class="btn-source active" id="btnToggleBgFilter" title="Filter Room Background">
+                            🎯 BG Filter: ON
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Video / Image Stage -->
+                <div class="stage-container" id="stageContainer">
+                    <div class="stage-hud">
+                        <span class="hud-pill" id="hudStatus">Ready • Verified Demo Sample Active</span>
+                        <span class="hud-pill latency" id="hudLatency">48 ms</span>
+                    </div>
+
+                    <div class="media-wrapper" id="mediaWrapper">
+                        <!-- Live OpenCV Camera Feed with On-Screen Drop-Zone & BG Noise Filter -->
+                        <img id="liveCameraFeed" src="" alt="Live Camera Stream" style="display: none;">
+                        <video id="webcamVideo" autoplay playsinline muted style="display: none;"></video>
+                        <img id="staticPreview" src="/demo_samples/sample_canteen_rice_plate.jpg" alt="Input Preview" style="display: block;">
+                        <canvas id="detectionCanvas"></canvas>
+                    </div>
+
+                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                </div>
+
+                <!-- Verified Demo Presets for Demo Day -->
+                <div class="preset-section">
+                    <span class="preset-label">🎯 Verified Live Demo:</span>
+                    <div class="preset-list" id="samplePillList">
+                        <button class="preset-pill active" data-sample="sample_canteen_rice_plate.jpg" data-stream="dual">
+                            🍛 Cooked Rice Plate (Dual Stream)
+                        </button>
+                        <button class="preset-pill" data-sample="sample_apple_core.jpg" data-stream="organic">
+                            🍎 Apple Core (Organic)
+                        </button>
+                        <button class="preset-pill" data-sample="sample_packaging_cardboard.jpg" data-stream="inorganic">
+                            📦 Cardboard Box (Inorganic)
+                        </button>
+                        <button class="preset-pill" data-sample="sample_bottle_recyclable.jpg" data-stream="inorganic">
+                            🧴 Plastic Bottle (Inorganic)
+                        </button>
+                        <button class="preset-pill" data-sample="sample_can_metal.jpg" data-stream="inorganic">
+                            🥫 Drink Can (Inorganic)
+                        </button>
+                        <button class="preset-pill" data-sample="sample_bread_organic.jpg" data-stream="organic">
+                            🍞 Bread / Roti (Organic)
+                        </button>
+                        <button class="preset-pill" data-sample="sample_food_organic.jpg" data-stream="organic">
+                            🥗 Leftover Food (Organic)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Viewport Action Controls -->
+                <div class="viewport-controls">
+                    <button class="btn-primary" id="btnCaptureAnalyze">
+                        📸 Detect Waste
+                    </button>
+                    <button class="btn-secondary" id="btnAutoScanToggle" title="Auto-Scan with Explanation Hold Window">
+                        ⏱️ Auto-Scan (Hold): OFF
+                    </button>
+                    <button class="btn-secondary" id="btnUnlockScan" style="display: none; background: #0284c7; color: white; font-weight: 600;" title="Finish explaining and scan next item immediately (or press Spacebar)">
+                        ⚡ Scan Next Item
+                    </button>
+                    <div class="hold-selector" id="holdSelector" title="Hold duration once waste is detected so you have enough time to explain">
+                        <span style="font-size: 0.78rem; color: #94a3b8; font-weight: 600;">Hold:</span>
+                        <button class="btn-chip" data-hold="30">30s</button>
+                        <button class="btn-chip active" data-hold="45">45s</button>
+                        <button class="btn-chip" data-hold="60">60s</button>
+                    </div>
+                    <button class="btn-secondary" id="btnToggleMasks">
+                        👁️ Toggle Box
+                    </button>
+                </div>
+            </section>
+
+            <!-- Right Card: Waste Analysis & Disposal Routing -->
+            <section class="card result-card">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <h2>Waste Analysis</h2>
+                        <p class="card-subtitle">AI Detection & Stream Classification</p>
+                    </div>
+                    <span class="conf-badge" id="confidenceBadge">Confidence: 93.1%</span>
+                </div>
+
+                <!-- Prominent Stream & Classification Card -->
+                <div class="expected-waste-card organic" id="expectedWasteCard">
+                    <div class="expected-top-row">
+                        <span class="stream-badge organic" id="streamBadge">🟩 ORGANIC WASTE (Green Bin)</span>
+                        <div class="stream-icon-badge" id="itemStreamIcon">🌱</div>
+                    </div>
+                    <div class="expected-content">
+                        <span class="label-muted">IDENTIFIED ITEM</span>
+                        <h1 class="expected-title" id="expectedWasteTitle">Roti / Bread Wastage (रोटी / ब्रेड)</h1>
+                        <p class="expected-detail" id="expectedWasteDetail">Gila Kachra (गीला कचरा) • City Compost & Micro-Composting Centre</p>
+                    </div>
+                </div>
+
+                <!-- Quantified Metrics -->
+                <div class="quantified-card">
+                    <div class="quantified-item">
+                        <span class="quantified-label">ESTIMATED MASS</span>
+                        <div class="quantified-value-row">
+                            <span class="quantified-number" id="quantifiedWeight">75</span>
+                            <span class="quantified-unit">grams</span>
+                        </div>
+                        <span class="quantified-sub">Calibrated volumetric telemetry</span>
+                    </div>
+                    <div class="quantified-divider"></div>
+                    <div class="quantified-item">
+                        <span class="quantified-label">OBJECTS IN VIEW</span>
+                        <div class="quantified-value-row">
+                            <span class="quantified-number" id="quantifiedCount">1</span>
+                            <span class="quantified-unit">item</span>
+                        </div>
+                        <span class="quantified-sub">Neural segmentation instance</span>
+                    </div>
+                </div>
+
+                <!-- Bin Routing Instruction Card -->
+                <div class="bin-instruction-card organic" id="binInstructionCard">
+                    <div class="instruction-header">
+                        <span class="instruction-icon" id="binIcon">🟩</span>
+                        <span class="instruction-title" id="binTitle">Route to Green Compost Bin</span>
+                    </div>
+                    <div class="instruction-text" id="binInstructionText">
+                        Place in Green / Compost bin for organic decomposition & soil enrichment (Gila Kachra).
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Combined Municipal Waste Collection & Live Telemetry -->
+        <section class="telemetry-section">
+            <div class="telemetry-header">
+                <div class="telemetry-title-group">
+                    <span class="live-dot-pulse"></span>
+                    <h3>Autonomous Waste Collection & Impact Telemetry</h3>
+                    <span class="telemetry-badge">Municipal MRF Sync</span>
+                </div>
+                <div class="telemetry-controls">
+                    <span class="telemetry-sync-pill" id="telemetrySyncText">🟢 Live Telemetry Synced</span>
+                    <button class="btn-stat-reset" id="btnResetStats" title="Reset Counter to Literal 0">🗑️ Reset Stats to 0</button>
+                </div>
+            </div>
+
+            <div class="telemetry-grid">
+                <!-- KPI 1: Combined Object Count -->
+                <div class="telemetry-kpi-card">
+                    <div class="kpi-icon-wrap">🎯</div>
+                    <div class="kpi-body">
+                        <span class="kpi-label">TOTAL OBJECTS SORTED</span>
+                        <div class="kpi-value-row">
+                            <span class="kpi-number" id="kpiTotalObjects">0</span>
+                            <span class="kpi-unit">items</span>
+                        </div>
+                        <span class="kpi-sub" id="kpiStreamBreakdown">🟩 0 Organic • 🟦 0 Inorganic</span>
+                    </div>
+                </div>
+
+                <!-- KPI 2: Combined Total Weight Collected -->
+                <div class="telemetry-kpi-card">
+                    <div class="kpi-icon-wrap">⚖️</div>
+                    <div class="kpi-body">
+                        <span class="kpi-label">TOTAL TRASH COLLECTED</span>
+                        <div class="kpi-value-row">
+                            <span class="kpi-number" id="kpiTotalWeight">0.00</span>
+                            <span class="kpi-unit">kg</span>
+                        </div>
+                        <span class="kpi-sub" id="kpiWeightBreakdown">🟩 0.00 kg Wet • 🟦 0.00 kg Dry</span>
+                    </div>
+                </div>
+
+                <!-- KPI 3: CO2e Carbon Avoided -->
+                <div class="telemetry-kpi-card">
+                    <div class="kpi-icon-wrap">🌱</div>
+                    <div class="kpi-body">
+                        <span class="kpi-label">CO₂e EMISSIONS AVOIDED</span>
+                        <div class="kpi-value-row">
+                            <span class="kpi-number" id="kpiTotalCo2">0.00</span>
+                            <span class="kpi-unit">kg CO₂e</span>
+                        </div>
+                        <span class="kpi-sub">Landfill methane & plastic offset</span>
+                    </div>
+                </div>
+
+                <!-- KPI 4: Smart Bin Fill Capacity -->
+                <div class="telemetry-kpi-card">
+                    <div class="kpi-icon-wrap">🗑️</div>
+                    <div class="kpi-body">
+                        <span class="kpi-label">SMART BIN CAPACITY</span>
+                        <div class="bin-fill-container">
+                            <div class="bin-fill-row">
+                                <span class="bin-fill-name">🟩 Green (Wet)</span>
+                                <div class="fill-track"><div class="fill-bar green" id="fillBarGreen" style="width: 0%;"></div></div>
+                                <span class="fill-pct" id="fillPctGreen">0%</span>
+                            </div>
+                            <div class="bin-fill-row">
+                                <span class="bin-fill-name">🟦 Blue (Dry)</span>
+                                <div class="fill-track"><div class="fill-bar blue" id="fillBarBlue" style="width: 0%;"></div></div>
+                                <span class="fill-pct" id="fillPctBlue">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Application Script -->
+    <script src="/static/js/app.js?v=5.0"></script>
+</body>
+</html>
